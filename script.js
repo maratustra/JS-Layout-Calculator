@@ -10,9 +10,7 @@ const extraServicePrice1 = +prompt("Сколько это будет стоит�
 const extraService2 = prompt("Какой дополнительный тип услуги вам нужен?");
 const extraServicePrice2 = +prompt("Сколько это будет стоить?", "укажите цену в рублях");
 const rollback = 10;
-let fullPrice;
-let servicePercentPrice;
-let allServicePrices;
+
 
 const showTypeOf = function (variable) {
   return variable, typeof variable;
@@ -27,7 +25,6 @@ function getFullPrice(screenPrice, allServicePrices) {
 }
 
 const getTitle = function (title) {
-  if (!title) return title;
   title = title.trim();
   return title.charAt(0).toUpperCase() + title.substring(1).toLowerCase();
 };
@@ -48,15 +45,14 @@ const getRollbackMessage = function (price) {
   }
 };
 
-
-allServicePrices = getAllServicePrices(extraServicePrice1, extraServicePrice2);
-fullPrice = getFullPrice(screenPrice, allServicePrices);
-servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
+const allServicePrices = getAllServicePrices(extraServicePrice1, extraServicePrice2);
+const fullPrice = getFullPrice(screenPrice, allServicePrices);
+const servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
 
 console.log(showTypeOf(title));
 console.log(showTypeOf(screenPrice));
 console.log(showTypeOf(adaptive));
-console.log(screens.split(" "));
+console.log(screens.split(","));
 console.log(getRollbackMessage(fullPrice));
 console.log(servicePercentPrice);
 
