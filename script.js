@@ -39,10 +39,10 @@ const getAllServicePrices = function () {
     }
 
     do {
-      checkingSum = +prompt("Сколько это будет стоить?", "укажите цену в рублях");
-    } while (!isNumber(checkingSum));
+      checkingSum = prompt("Сколько это будет стоить?", "укажите цену в рублях");
+    } while (!isNumber(checkingSum) || checkingSum.trim() === "" || checkingSum === null);
 
-    sum += checkingSum;
+    sum += +checkingSum;
     checkingSum = 0;
   }
 
