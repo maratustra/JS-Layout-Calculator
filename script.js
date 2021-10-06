@@ -17,11 +17,10 @@ const isNumber = function (num) {
 const asking = function () {
   title = prompt("Как называется ваш проект?", "Калькулятор верстки");
   screens = prompt("Какие типы экранов нужно разработать?", "Десктоп, мобильный");
-  screenPrice = +prompt("Сколько будет стоить данная работа?", "укажите цену в рублях");
 
-  while (!isNumber(screenPrice)) {
+  do {
     screenPrice = +prompt("Сколько будет стоить данная работа?", "укажите цену в рублях");
-  }
+  } while (!isNumber(screenPrice));
 
   adaptive = confirm("Нужен ли адаптив на сайте?");
 };
@@ -29,6 +28,7 @@ const asking = function () {
 const getAllServicePrices = function () {
 
   let sum = 0;
+  let checkingSum;
 
   for (let i = 0; i < 2; i++) {
 
@@ -37,7 +37,13 @@ const getAllServicePrices = function () {
     } else if (i === 1) {
       extraService2 = prompt("Какой дополнительный тип услуги вам нужен?");
     }
-    sum += +prompt("Сколько это будет стоить?", "укажите цену в рублях");
+
+    do {
+      checkingSum = +prompt("Сколько это будет стоить?", "укажите цену в рублях");
+    } while (!isNumber(checkingSum));
+
+    sum += checkingSum;
+    checkingSum = 0;
   }
 
   return sum;
