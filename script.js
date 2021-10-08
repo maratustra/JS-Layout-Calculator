@@ -18,72 +18,79 @@ const appData = {
 
     do {
       appData.screenPrice = +prompt("Сколько будет стоить данная работа?", "укажите цену в рублях");
-    } while (!isNumber(appData.screenPrice));
+    } while (!appData.isNumber(appData.screenPrice));
 
     appData.adaptive = confirm("Нужен ли адаптив на сайте?");
-  }
-};
+  },
+  isNumber: function (num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+  },
+  getAllServicePrices: function () {
 
-const isNumber = function (num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
-};
-
-const getAllServicePrices = function () {
-
-  let sum = 0;
+    let sum = 0;
 
 
-  for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
 
-    let checkingSum = 0;
+      let checkingSum = 0;
 
-    if (i === 0) {
-      appData.extraService1 = prompt("Какой дополнительный тип услуги вам нужен?");
-    } else if (i === 1) {
-      appData.extraService2 = prompt("Какой дополнительный тип услуги вам нужен?");
+      if (i === 0) {
+        appData.extraService1 = prompt("Какой дополнительный тип услуги вам нужен?");
+      } else if (i === 1) {
+        appData.extraService2 = prompt("Какой дополнительный тип услуги вам нужен?");
+      }
+
+      do {
+        checkingSum = prompt("Сколько это будет стоить?", "укажите цену в рублях");
+      } while (!appData.isNumber(checkingSum) || checkingSum.trim() === "" || checkingSum === null);
+
+      sum += +checkingSum;
     }
 
-    do {
-      checkingSum = prompt("Сколько это будет стоить?", "укажите цену в рублях");
-    } while (!isNumber(checkingSum) || checkingSum.trim() === "" || checkingSum === null);
+    return sum;
+  },
+  getFullPrice() {
+    return appData.screenPrice + appData.allServicePrices;
+  },
+  getTitle: function () {
+    return appData.title.trim().charAt(0).toUpperCase() + appData.title.trim().substring(1).toLowerCase();
+  },
+  getServicePercentPrices: function () {
+    return Math.ceil(appData.fullPrice - (appData.fullPrice * (appData.rollback / 100)));
+  },
+  getRollbackMessage: function (price) {
+    if (price >= 30000) {
+      return "Даем скидку в 10%";
+    } else if (price < 30000 || price >= 15000) {
+      return "Даем скидку в 5%";
+    } else if (price < 15000 || price > 0) {
+      return "Скидка не предусмотрена";
+    } else {
+      return "Что-то пошло не так";
+    }
+  },
+  start: function () {
+    appData.asking();
 
-    sum += +checkingSum;
+    appData.allServicePrices = appData.getAllServicePrices();
+    appData.fullPrice = appData.getFullPrice(appData.screenPrice, appData.allServicePrices);
+    appData.servicePercentPrice = appData.getServicePercentPrices(appData.fullPrice, appData.rollback);
+    appData.title = appData.getTitle();
+
+    appData.logger();
+  },
+  logger: function () {
+
+    for (let key in appData) {
+      console.log(key);
+    }
   }
-
-  return sum;
 };
 
-function getFullPrice() {
-  return appData.screenPrice + appData.allServicePrices;
-}
 
-const getTitle = function () {
-  return appData.title.trim().charAt(0).toUpperCase() + appData.title.trim().substring(1).toLowerCase();
-};
+appData.start();
 
-const getServicePercentPrices = function () {
-  return Math.ceil(appData.fullPrice - (appData.fullPrice * (appData.rollback / 100)));
-};
 
-const getRollbackMessage = function (price) {
-  if (price >= 30000) {
-    return "Даем скидку в 10%";
-  } else if (price < 30000 || price >= 15000) {
-    return "Даем скидку в 5%";
-  } else if (price < 15000 || price > 0) {
-    return "Скидка не предусмотрена";
-  } else {
-    return "Что-то пошло не так";
-  }
-};
-
-appData.asking();
-appData.allServicePrices = getAllServicePrices();
-appData.fullPrice = getFullPrice(appData.screenPrice, appData.allServicePrices);
-appData.servicePercentPrice = getServicePercentPrices(appData.fullPrice, appData.rollback);
-appData.title = getTitle();
-
-console.log(appData.fullPrice, appData.servicePercentPrice);
 
 
 
