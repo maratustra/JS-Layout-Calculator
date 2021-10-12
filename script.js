@@ -56,7 +56,7 @@ const appData = {
         price = prompt("Сколько это будет стоить?", "укажите цену в рублях");
       } while (!appData.isNumber(price) || price === null);
 
-      appData.extraService[name + i] = +price;
+      appData.extraService[i] = { name: name, price: price };
     }
 
     appData.adaptive = confirm("Нужен ли адаптив на сайте?");
@@ -68,8 +68,10 @@ const appData = {
     }, 0);
 
     for (let key in appData.extraService) {
-      appData.allServicePrices += appData.extraService[key];
+
+      appData.allServicePrices += +appData.extraService[key].price;
     }
+
   },
   getFullPrice() {
     appData.fullPrice = appData.screenPrice + appData.allServicePrices;
@@ -92,10 +94,6 @@ const appData = {
     }
   },
   logger: function () {
-
-    // for (let key in appData) {
-    //   console.log(key);
-    // }
 
     console.log(appData.fullPrice);
     console.log(appData.servicePercentPrice);
