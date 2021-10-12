@@ -56,7 +56,7 @@ const appData = {
         price = prompt("Сколько это будет стоить?", "укажите цену в рублях");
       } while (!appData.isNumber(price) || price === null);
 
-      appData.extraService[name] = +price;
+      appData.extraService[name + i] = +price;
     }
 
     appData.adaptive = confirm("Нужен ли адаптив на сайте?");
