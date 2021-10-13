@@ -14,8 +14,8 @@ const spans = document.querySelector('.rollback span.range-value');
 
 const totalInputs = document.getElementsByClassName('total-input');
 
-for (let eachInput = 0; eachInput < totalInputs.length; eachInput++) {
-  totalInputs[eachInput];
+for (let i = 0; i < totalInputs.length; i++) {
+  console.log(totalInputs[i]);
 }
 
 let screenBlocks = document.querySelectorAll('div.screen');
