@@ -12,12 +12,12 @@ const inputs = document.querySelector('.rollback [type="range"]');
 
 const spans = document.querySelector('.rollback span.range-value');
 
-const totalInputs = document.getElementsByClassName('total-input');
-console.log(totalInputs);
-console.log(totalInputs[0]);
 
-for (let i = 0; i < totalInputs.length; i++) {
-  console.log(totalInputs[i]);
-}
+const screenPrice = document.getElementsByClassName('total-input')[0];
+const screens = document.getElementsByClassName('total-input')[1];
+const allServicePrices = document.getElementsByClassName('total-input')[2];
+const fullPrice = document.getElementsByClassName('total-input')[3];
+const servicePercentPrice = document.getElementsByClassName('total-input')[4];
+
 
 let screenBlocks = document.querySelectorAll('div.screen');
