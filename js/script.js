@@ -13,6 +13,8 @@ const inputs = document.querySelector('.rollback [type="range"]');
 const spans = document.querySelector('.rollback span.range-value');
 
 const totalInputs = document.getElementsByClassName('total-input');
+console.log(totalInputs);
+console.log(totalInputs[0]);
 
 for (let i = 0; i < totalInputs.length; i++) {
   console.log(totalInputs[i]);
