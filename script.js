@@ -37,9 +37,11 @@ const appData = {
   init: function () {
     appData.addTitle();
 
-    startBtn.addEventListener('click', appData.checkInputs);
-    buttonPlus.addEventListener('click', function () {
+    startBtn.addEventListener('click', function () {
       appData.isError = false;
+      appData.checkInputs();
+    });
+    buttonPlus.addEventListener('click', function () {
       appData.addScreenBlock();
     });
     inputRange.addEventListener('input', appData.addRollback);
