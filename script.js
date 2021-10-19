@@ -37,11 +37,11 @@ const appData = {
   init: function () {
     appData.addTitle();
 
-    startBtn.addEventListener('click', function () {
+    startBtn.addEventListener('click', () => {
       appData.isError = false;
       appData.checkInputs();
     });
-    buttonPlus.addEventListener('click', function () {
+    buttonPlus.addEventListener('click', () => {
       appData.addScreenBlock();
     });
     inputRange.addEventListener('input', appData.addRollback);
@@ -67,7 +67,7 @@ const appData = {
 
     screens = document.querySelectorAll('.screen');
 
-    screens.forEach(function (screen) {
+    screens.forEach(screen => {
 
       const select = screen.querySelector('select');
       const field = screen.querySelector('input');
@@ -85,7 +85,7 @@ const appData = {
 
     screens = document.querySelectorAll('.screen');
 
-    screens.forEach(function (screen, index) {
+    screens.forEach((screen, index) => {
 
       const select = screen.querySelector('select');
       const input = screen.querySelector('input');
@@ -101,7 +101,7 @@ const appData = {
     });
   },
   addServices: function () {
-    otherItemsPercent.forEach(function (item) {
+    otherItemsPercent.forEach(item => {
       const check = item.querySelector('input[type=checkbox]');
       const label = item.querySelector('label');
       const input = item.querySelector('input[type=text]');
@@ -111,7 +111,7 @@ const appData = {
       }
     });
 
-    otherItemsNumber.forEach(function (item) {
+    otherItemsNumber.forEach(item => {
       const check = item.querySelector('input[type=checkbox]');
       const label = item.querySelector('label');
       const input = item.querySelector('input[type=text]');
@@ -129,7 +129,7 @@ const appData = {
     screens[screens.length - 1].after(cloneScreen);
   },
   addPrices: function () {
-    appData.screenPrice = appData.screens.reduce(function (prevElem, nextElem) {
+    appData.screenPrice = appData.screens.reduce((prevElem, nextElem) => {
       return prevElem + nextElem.price;
     }, 0);
 
