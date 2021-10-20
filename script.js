@@ -45,6 +45,7 @@ const appData = {
       this.checkInputs();
     });
     buttonPlus.addEventListener('click', () => this.addScreenBlock());
+    cms.addEventListener('change', (event) => this.cmsVisible(event));
     inputRange.addEventListener('input', this.addRollback.bind(appData));
     resetBtn.addEventListener('click', () => this.reset());
   },
@@ -148,6 +149,11 @@ const appData = {
   addRollback: function (event) {
     inputRangeValue.textContent = event.target.value + "%";
     this.rollback = event.target.value;
+  },
+  cmsVisible: function (event) {
+    const hiddenVariant = document.querySelector('.hidden-cms-variants');
+
+    cms.checked === true ? hiddenVariant.style.display = 'flex' : hiddenVariant.style.display = 'none';
   },
   disableAllInputs: function () {
     screens = document.querySelectorAll('.screen');
