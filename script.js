@@ -11,6 +11,9 @@ const inputRangeValue = document.querySelector('.rollback .range-value');
 
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
 const cms = document.getElementById('cms-open');
+const cmsOtherOption = document.querySelector('option[value="other"]');
+const cmsSelectionList = document.querySelector('#cms-select');
+const hiddenInnerBlock = document.getElementsByClassName('main-controls__input')[8];
 
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
@@ -37,6 +40,7 @@ const appData = {
   servicePercentPrice: 0,
   counter: 0,
   isError: false,
+
   init: function () {
     this.addTitle();
 
@@ -45,13 +49,23 @@ const appData = {
       this.checkInputs();
     });
     buttonPlus.addEventListener('click', () => this.addScreenBlock());
-    cms.addEventListener('change', (event) => this.cmsVisible(event));
+    cms.addEventListener('change', () => this.cmsVisible());
+    cmsSelectionList.addEventListener('change', (e) => {
+
+      if (e.target.value === 'other') {
+        this.cmsOtherVisible();
+      } else {
+        this.cmsOtherHidden();
+      }
+    });
     inputRange.addEventListener('input', this.addRollback.bind(appData));
     resetBtn.addEventListener('click', () => this.reset());
   },
+
   addTitle: function () {
     document.title = title.textContent;
   },
+
   start: function () {
     this.addScreens();
     this.addServices();
@@ -60,6 +74,7 @@ const appData = {
     this.disableAllInputs();
     this.toggleBtn();
   },
+
   showResult: function () {
     total.value = this.screenPrice;
     totalCount.value = this.counter;
@@ -67,6 +82,7 @@ const appData = {
     fullTotalCount.value = this.fullPrice;
     totalCountRollback.value = this.servicePercentPrice;
   },
+
   checkInputs: function () {
     screens = document.querySelectorAll('.screen');
 
@@ -84,6 +100,7 @@ const appData = {
       this.start();
     }
   },
+
   addScreens: function () {
     screens = document.querySelectorAll('.screen');
 
@@ -102,6 +119,7 @@ const appData = {
       this.counter += +input.value;
     });
   },
+
   addServices: function () {
     otherItemsPercent.forEach(item => {
       const check = item.querySelector('input[type=checkbox]');
@@ -123,6 +141,7 @@ const appData = {
       }
     });
   },
+
   addScreenBlock: function () {
     const cloneScreen = screens[0].cloneNode(true);
     const inputClone = cloneScreen.querySelector('input');
@@ -130,6 +149,7 @@ const appData = {
     inputClone.value = '';
     screens[screens.length - 1].after(cloneScreen);
   },
+
   addPrices: function () {
     this.screenPrice = this.screens.reduce((prevElem, nextElem) => {
       return prevElem + nextElem.price;
@@ -146,15 +166,26 @@ const appData = {
 
     this.servicePercentPrice = Math.ceil(this.fullPrice - (this.fullPrice * (this.rollback / 100)));
   },
+
   addRollback: function (event) {
     inputRangeValue.textContent = event.target.value + "%";
     this.rollback = event.target.value;
   },
-  cmsVisible: function (event) {
+
+  cmsVisible: function () {
     const hiddenVariant = document.querySelector('.hidden-cms-variants');
 
     cms.checked === true ? hiddenVariant.style.display = 'flex' : hiddenVariant.style.display = 'none';
   },
+
+  cmsOtherVisible: function () {
+    hiddenInnerBlock.style.display = 'block';
+  },
+
+  cmsOtherHidden: function () {
+    hiddenInnerBlock.style.display = 'none';
+  },
+
   disableAllInputs: function () {
     screens = document.querySelectorAll('.screen');
 
@@ -175,10 +206,16 @@ const appData = {
       }
     });
   },
+
   toggleBtn: function () {
-    startBtn.style.display = (startBtn.style.display == 'none') ? 'block' : 'none';
-    resetBtn.style.display = (resetBtn.style.display == 'none') ? 'block' : 'none';
+    this.toggleButton(startBtn);
+    this.toggleButton(resetBtn);
   },
+
+  toggleButton: function (btn) {
+    btn.style.display = (btn.style.display == 'none') ? 'block' : 'none';
+  },
+
   reset: function () {
     const results = document.querySelectorAll('.total-input');
     screens = document.querySelectorAll('.screen');
