@@ -9,6 +9,8 @@ const otherItemsNumber = document.querySelectorAll('.other-items.number');
 const inputRange = document.querySelector('.rollback input');
 const inputRangeValue = document.querySelector('.rollback .range-value');
 
+const checkboxes = document.querySelectorAll('input[type=checkbox]');
+
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
 
@@ -45,6 +47,9 @@ const appData = {
       this.addScreenBlock();
     });
     inputRange.addEventListener('input', this.addRollback);
+    resetBtn.addEventListener('click', () => {
+      this.reset();
+    });
   },
   addTitle: function () {
     document.title = title.textContent;
@@ -53,8 +58,9 @@ const appData = {
     this.addScreens();
     this.addServices();
     this.addPrices();
-
     this.showResult();
+    this.disableAllInputs();
+    this.toggleBtn();
   },
   showResult: function () {
     total.value = this.screenPrice;
@@ -64,7 +70,6 @@ const appData = {
     totalCountRollback.value = this.servicePercentPrice;
   },
   checkInputs: function () {
-
     screens = document.querySelectorAll('.screen');
 
     screens.forEach(screen => {
@@ -82,7 +87,6 @@ const appData = {
     }
   },
   addScreens: function () {
-
     screens = document.querySelectorAll('.screen');
 
     screens.forEach((screen, index) => {
@@ -146,14 +150,58 @@ const appData = {
   },
   addRollback: function (event) {
     inputRangeValue.textContent = event.target.value + "%";
-    appData.rollback = event.target.value; // <= не работает this 
-  }
+    appData.rollback = event.target.value;
+  },
+  disableAllInputs: function () {
+    screens = document.querySelectorAll('.screen');
+
+    screens.forEach(screen => {
+      const input = screen.querySelector('[type="text"]');
+      const select = screen.querySelector('select');
+
+      if (!input.hasAttribute('disabled')) {
+        input.setAttribute("disabled", "disabled");
+      } else {
+        input.disabled = false;
+      }
+
+      if (!select.hasAttribute('disabled')) {
+        select.setAttribute("disabled", "disabled");
+      } else {
+        select.disabled = false;
+      }
+    });
+  },
+  toggleBtn: function () {
+    startBtn.style.display = (startBtn.style.display == 'none') ? 'block' : 'none';
+    resetBtn.style.display = (resetBtn.style.display == 'none') ? 'block' : 'none';
+  },
+  reset: function () {
+    const results = document.querySelectorAll('.total-input');
+    screens = document.querySelectorAll('.screen');
+
+    results.forEach(elem => elem.value = "0");
+
+    screens.forEach(screen => {
+      const input = screen.querySelector('[type="text"]');
+      const select = screen.querySelector('select');
+
+      select.value = "";
+      input.value = "";
+    });
+
+    checkboxes.forEach(elem => elem.checked = false);
+
+    inputRange.value = "0";
+    inputRangeValue.textContent = "0%";
+
+    this.toggleBtn();
+    this.disableAllInputs();
+  },
 };
 
 
 appData.init();
-
-
 
 
 
