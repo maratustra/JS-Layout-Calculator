@@ -46,7 +46,7 @@ const appData = {
     buttonPlus.addEventListener('click', () => {
       this.addScreenBlock();
     });
-    inputRange.addEventListener('input', this.addRollback);
+    inputRange.addEventListener('input', this.addRollback.bind(appData));
     resetBtn.addEventListener('click', () => {
       this.reset();
     });
@@ -150,7 +150,7 @@ const appData = {
   },
   addRollback: function (event) {
     inputRangeValue.textContent = event.target.value + "%";
-    appData.rollback = event.target.value;
+    this.rollback = event.target.value;
   },
   disableAllInputs: function () {
     screens = document.querySelectorAll('.screen');
