@@ -10,6 +10,7 @@ const inputRange = document.querySelector('.rollback input');
 const inputRangeValue = document.querySelector('.rollback .range-value');
 
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
+const cms = document.getElementById('cms-open');
 
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
@@ -43,13 +44,9 @@ const appData = {
       this.isError = false;
       this.checkInputs();
     });
-    buttonPlus.addEventListener('click', () => {
-      this.addScreenBlock();
-    });
+    buttonPlus.addEventListener('click', () => this.addScreenBlock());
     inputRange.addEventListener('input', this.addRollback.bind(appData));
-    resetBtn.addEventListener('click', () => {
-      this.reset();
-    });
+    resetBtn.addEventListener('click', () => this.reset());
   },
   addTitle: function () {
     document.title = title.textContent;
