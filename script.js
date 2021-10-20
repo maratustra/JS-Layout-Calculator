@@ -12,9 +12,10 @@ const inputRangeValue = document.querySelector('.rollback .range-value');
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
 const cms = document.getElementById('cms-open');
 const cmsOtherOption = document.querySelector('option[value="other"]');
+const cmsWordPressOption = document.querySelector('option[value="50"]');
 const cmsSelectionList = document.querySelector('#cms-select');
 const hiddenInnerBlock = document.getElementsByClassName('main-controls__input')[8];
-
+console.log(cmsSelectionList);
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
 
@@ -58,7 +59,7 @@ const appData = {
         this.cmsOtherHidden();
       }
     });
-    inputRange.addEventListener('input', this.addRollback.bind(appData));
+    inputRange.addEventListener('input', (event) => this.addRollback(event));
     resetBtn.addEventListener('click', () => this.reset());
   },
 
@@ -140,6 +141,14 @@ const appData = {
         this.extraServiceNumber[label.textContent] = +input.value;
       }
     });
+
+    //if (cmsOtherOption) {
+    // const input = document.querySelector('#cms-other-input');
+
+    // console.log('z nen');
+    // this.extraServicePercent += +input.value;
+    // console.log(this.extraServicePercent);
+    //}
   },
 
   addScreenBlock: function () {
@@ -162,7 +171,9 @@ const appData = {
     for (let key in this.extraServicePercent) {
       this.servicePricesPercent += this.screenPrice * (this.extraServicePercent[key] / 100);
     }
+
     this.fullPrice = this.screenPrice + this.servicePricesNumber + this.servicePricesPercent;
+    //Math.ceil(this.screenPrice - (this.screenPrice * (cmsWordPressOption.value / 100)));
 
     this.servicePercentPrice = Math.ceil(this.fullPrice - (this.fullPrice * (this.rollback / 100)));
   },
@@ -170,6 +181,7 @@ const appData = {
   addRollback: function (event) {
     inputRangeValue.textContent = event.target.value + "%";
     this.rollback = event.target.value;
+    console.log(this.rollback);
   },
 
   cmsVisible: function () {
@@ -180,6 +192,13 @@ const appData = {
 
   cmsOtherVisible: function () {
     hiddenInnerBlock.style.display = 'block';
+
+    const input = document.querySelector('#cms-other-input');
+
+    console.log('z nen');
+    console.log(this);
+    this.extraServicePercent = +input.value;
+    console.log(this.extraServicePercent);
   },
 
   cmsOtherHidden: function () {
@@ -187,6 +206,8 @@ const appData = {
   },
 
   disableAllInputs: function () {
+    const cmsInput = document.querySelector('#cms-other-input');
+
     screens = document.querySelectorAll('.screen');
 
     screens.forEach(screen => {
@@ -205,11 +226,24 @@ const appData = {
         select.disabled = false;
       }
     });
+
+    if (!cmsSelectionList.hasAttribute('disabled')) {
+      cmsSelectionList.setAttribute("disabled", "disabled");
+    } else {
+      cmsSelectionList.disabled = false;
+    }
+
+    if (!cmsInput.hasAttribute('disabled')) {
+      cmsInput.setAttribute("disabled", "disabled");
+    } else {
+      cmsInput.disabled = false;
+    }
   },
 
   toggleBtn: function () {
     this.toggleButton(startBtn);
     this.toggleButton(resetBtn);
+    this.toggleButton(buttonPlus);
   },
 
   toggleButton: function (btn) {
