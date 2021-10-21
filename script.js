@@ -15,7 +15,7 @@ const cmsOtherOption = document.querySelector('option[value="other"]');
 const cmsWordPressOption = document.querySelector('option[value="50"]');
 const cmsSelectionList = document.querySelector('#cms-select');
 const hiddenInnerBlock = document.getElementsByClassName('main-controls__input')[8];
-console.log(cmsSelectionList);
+
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
 
@@ -71,6 +71,7 @@ const appData = {
     this.addScreens();
     this.addServices();
     this.addPrices();
+    this.addRollbackToPrices();
     this.showResult();
     this.disableAllInputs();
     this.toggleBtn();
@@ -141,14 +142,6 @@ const appData = {
         this.extraServiceNumber[label.textContent] = +input.value;
       }
     });
-
-    //if (cmsOtherOption) {
-    // const input = document.querySelector('#cms-other-input');
-
-    // console.log('z nen');
-    // this.extraServicePercent += +input.value;
-    // console.log(this.extraServicePercent);
-    //}
   },
 
   addScreenBlock: function () {
@@ -160,6 +153,7 @@ const appData = {
   },
 
   addPrices: function () {
+
     this.screenPrice = this.screens.reduce((prevElem, nextElem) => {
       return prevElem + nextElem.price;
     }, 0);
@@ -173,15 +167,18 @@ const appData = {
     }
 
     this.fullPrice = this.screenPrice + this.servicePricesNumber + this.servicePricesPercent;
-    //Math.ceil(this.screenPrice - (this.screenPrice * (cmsWordPressOption.value / 100)));
+  },
 
+  addRollbackToPrices: function () {
     this.servicePercentPrice = Math.ceil(this.fullPrice - (this.fullPrice * (this.rollback / 100)));
   },
 
   addRollback: function (event) {
     inputRangeValue.textContent = event.target.value + "%";
-    this.rollback = event.target.value;
-    console.log(this.rollback);
+    this.rollback = +event.target.value;
+
+    this.addRollbackToPrices();
+    this.showResult();
   },
 
   cmsVisible: function () {
