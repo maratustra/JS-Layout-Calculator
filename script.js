@@ -10,9 +10,7 @@ const inputRange = document.querySelector('.rollback input');
 const inputRangeValue = document.querySelector('.rollback .range-value');
 
 const checkboxes = document.querySelectorAll('input[type=checkbox]');
-const cms = document.getElementById('cms-open');
-const cmsOtherOption = document.querySelector('option[value="other"]');
-const cmsWordPressOption = document.querySelector('option[value="50"]');
+const cmsCheckbox = document.getElementById('cms-open');
 const cmsSelectionList = document.querySelector('#cms-select');
 const hiddenInnerBlock = document.getElementsByClassName('main-controls__input')[8];
 
@@ -39,7 +37,10 @@ const appData = {
   servicePricesNumber: 0,
   fullPrice: 0,
   servicePercentPrice: 0,
+  cmsWordPressPrice: 0,
+  cmsOtherValue: 0,
   counter: 0,
+  cmsWordPressCounter: 0,
   isError: false,
 
   init: function () {
@@ -50,11 +51,14 @@ const appData = {
       this.checkInputs();
     });
     buttonPlus.addEventListener('click', () => this.addScreenBlock());
-    cms.addEventListener('change', () => this.cmsVisible());
+    cmsCheckbox.addEventListener('change', () => this.cmsCheckboxVisible());
     cmsSelectionList.addEventListener('change', (e) => {
 
-      if (e.target.value === 'other') {
+      if (e.target.value === '50') {
+        this.cmsWordPressCounter++;
+      } else if (e.target.value === 'other') {
         this.cmsOtherVisible();
+        this.cmsReadOtherInput();
       } else {
         this.cmsOtherHidden();
       }
@@ -167,6 +171,16 @@ const appData = {
     }
 
     this.fullPrice = this.screenPrice + this.servicePricesNumber + this.servicePricesPercent;
+
+    if (this.cmsWordPressCounter) {
+      this.cmsWordPressPrice = this.fullPrice / 2;
+      this.servicePricesPercent += this.cmsWordPressPrice;
+      this.fullPrice = this.fullPrice + this.cmsWordPressPrice;
+    } else if (this.cmsOtherValue) {
+      this.cmsOtherValue = this.fullPrice * (this.cmsOtherValue / 100);
+      this.servicePricesPercent += this.cmsOtherValue;
+      this.fullPrice = this.fullPrice + this.cmsOtherValue;
+    }
   },
 
   addRollbackToPrices: function () {
@@ -181,21 +195,22 @@ const appData = {
     this.showResult();
   },
 
-  cmsVisible: function () {
+  cmsCheckboxVisible: function () {
     const hiddenVariant = document.querySelector('.hidden-cms-variants');
 
-    cms.checked === true ? hiddenVariant.style.display = 'flex' : hiddenVariant.style.display = 'none';
+    cmsCheckbox.checked === true ? hiddenVariant.style.display = 'flex' : hiddenVariant.style.display = 'none';
   },
 
   cmsOtherVisible: function () {
     hiddenInnerBlock.style.display = 'block';
+  },
 
+  cmsReadOtherInput: function () {
     const input = document.querySelector('#cms-other-input');
 
-    console.log('z nen');
-    console.log(this);
-    this.extraServicePercent = +input.value;
-    console.log(this.extraServicePercent);
+    input.addEventListener('input', (e) => {
+      this.cmsOtherValue = +e.target.value;
+    });
   },
 
   cmsOtherHidden: function () {
@@ -266,6 +281,7 @@ const appData = {
     inputRange.value = "0";
     inputRangeValue.textContent = "0%";
 
+    this.cmsCheckboxVisible();
     this.toggleBtn();
     this.disableAllInputs();
   },
